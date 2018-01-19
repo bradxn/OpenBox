@@ -1,3 +1,5 @@
+// Originally from https://github.com/bumblebeefr/svg-box-generator
+
 var layer = document.getElementById("layer1");
 
 var TabTools = {
