@@ -1,0 +1,10 @@
+== To Do
+
+To Do:
+    * Make the background grid size match the material thickness
+    * Work on the colors to make things look more like a blueprint
+    * Download the SVG with no fill and with red outlines
+    * Let the user select a measurement system to use (convert everything when the option changes)
+    * Let the user enter different units in the size boxes (e.g. if they select inches, but enter "3mm" then convert the 3mm to inches)
+    * Figure out why the topless box starts to the left of the left edge
+
