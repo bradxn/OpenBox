@@ -1,3 +1,139 @@
-<h1>OpenBox Test</h1>
+<!DOCTYPE html>
+<html>
 
-<p>Hello world!</p>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>SVG Boxes for laser cutter generator</title>
+	<style>
+		h1 {
+			font-weight:normal;
+			border-bottom:dotted 1px #CCC;
+		}
+		body {
+			margin: 0;
+			background-color: #f0f0f0;
+			foo-max-width:600px;
+			foo-margin:auto;
+			font-family: Verdana,"DejaVu Sans","Bitstream Vera Sans",Geneva,sans-serif;
+			font-size:8pt;
+		}
+
+		#controls
+		{
+			width: 300px;
+			float: left;
+			margin-left: 12pt;
+		}
+
+		#preview
+		{
+			overflow: scroll;
+			position: fixed;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			left: 300px;
+
+
+			background-color: #2883B6;
+			background-size: 20px 20px;
+    		background-image: linear-gradient(to right, rgba(4, 43, 88, 0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(4, 43, 88, 0.3) 1px, transparent 1px);
+		}
+
+		.foo
+		{
+			background-color: #2883B6;
+			background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUY1RjdCNkVFOTkyMTFFMjhGMDdFMEEyQjQ0NDQ1RjYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUY1RjdCNkZFOTkyMTFFMjhGMDdFMEEyQjQ0NDQ1RjYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1RjVGN0I2Q0U5OTIxMUUyOEYwN0UwQTJCNDQ0NDVGNiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1RjVGN0I2REU5OTIxMUUyOEYwN0UwQTJCNDQ0NDVGNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgQ7RJEAAABkSURBVHjaYvj//z8DEDtDaRAWpwebEWQpAwODIBC/Z4AA+rAHysdMDAMEWIBYHOp9caiYKJI8zdggi19Cw/8lkiTN2aNBPRrUo0E9GtSjQT0a1KNBPRrUo0E9GtSjQU05GyDAAD0qLnnflqfDAAAAAElFTkSuQmCC");
+		}
+		fieldset{
+			border:none;
+		}
+		fieldset div{
+			margin:0.5em 0;
+		}
+		label span {
+			display:inline-block;	
+			foo-width:23em;
+			text-align:right;
+		}
+		input {
+			border:solid 1px #888888;	
+			width:4em;
+			margin-right:0.5em;
+			text-align:right;
+		}
+		#out{
+			margin-top: 24pt;
+			text-align:center;	
+		}
+		#footer{
+			text-align:right;
+			opacity:0.6;
+			font-size:0.8em;
+		}
+	</style>
+
+	<script>
+		function handle_change()
+		{
+			generate_box();
+		}
+	</script>
+</head>
+
+<body onload="handle_change()">
+	<div id="svg" style="display:none">
+		<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" width="100" height="100" id="box" version="1.1" >
+			<g transform="translate(25, 25)" id="layer1">
+			</g>
+		</svg>
+	</div>
+	<div id="controls">
+	<h1>SVG Box Generator</h1>
+		<fieldset>
+		<div>
+			<label>
+				<span>Closed Box:</span>
+				<input type="checkbox" id="closed" onchange="handle_change()"/>
+			</label>
+		</div>
+		<div>
+			<label>
+				<span>Width:</span>
+				<input type="text" id="width" value="200" onchange="handle_change()"/>mm</label>
+		</div>
+		<div>
+			<label>
+				<span>Depth:</span>
+				<input type="text" id="depth" value="100" onchange="handle_change()"/>mm</label>
+		</div>
+		<div>
+			<label>
+				<span>Height:</span>
+				<input type="text" id="height" value="50" onchange="handle_change()"/>mm</label>
+		</div>
+		<div>
+			<label>
+				<span>Size of Fingers:</span>
+				<input type="text" id="tabs" value="10" onchange="handle_change()"/>mm</label>
+		</div>
+		<div>
+				<label>
+					<span>Material Thickness:</span>
+					<input type="text" id="thickness" value="3" onchange="handle_change()"/>mm</label>
+		</div>
+		<div>
+		<label>
+			<span>Kerf:</span>
+			<input type="text" id="backlash" value="0.1" onchange="handle_change()"/>mm</label>
+		</div>
+		<div id="out"></div>
+	</fieldset>
+	<script src="box_generator.js"></script>
+	</div>
+
+	<div id="preview"></div>
+
+</body>
+
+</html>
