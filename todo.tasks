@@ -7,4 +7,10 @@ To Do:
     * Let the user select a measurement system to use (convert everything when the option changes)
     * Let the user enter different units in the size boxes (e.g. if they select inches, but enter "3mm" then convert the 3mm to inches)
     * Figure out why the topless box starts to the left of the left edge
-
+    * Should try to fit parts into a 20x12 workspace (they are more vertically oriented now). It would be really nice to split them into multiple 20x12 workspaces. And that 20x12 should be configurable... It should be next to thickness (duh).
+    * Should label the sides in the preview
+    * Would be really nice to show dimension lines in the preview
+    * More box styles, at least:
+        * Missing top and front
+        * Divided compartments
+    

@@ -41,17 +41,18 @@ var TabTools = {
 		var tab_real_width = length / nb_tabs;
 
 		//Check if no inconsistency on tab size and number
-		console.debug(["Pour une largeur de", length, "et des encoches de", tab_width, "=> Nombre d'encoches :", nb_tabs, "Largeur d'encoche : ", tab_real_width].join(" "));
-
+		console.debug(["For a width of ", length, "and finger size of ", tab_width, "=> Number of finger:", nb_tabs, "Finger width: ", tab_real_width].join(" "));
+/*
 		if (tab_real_width <= thickness * 1.5) {
-			var msg = ["Be careful the resulting notches are not wide enough for the material of your material (", largeur_encoche, " &lt; ", materiau, "). Thank you for using a notch size consistent with your box"].join(" ");
+			var msg = ["Be careful the resulting notches are not wide enough for the material of your material (", tab_width, " < ", thickness, "). Please use a notch size consistent with your box"].join(" ");
 			alert(msg);
 			throw (msg);
 		}
-
+*/
 		if (nb_tabs <= 1) {
-			var msg = ["Attention you will have no notch on this length, it's a bad idea! Indicate a correct notch size for your box size"].join(" ");
-			alert(msg);
+			var msg = ["No room for any fingers! Please use a finger size that will work for your box size"].join(" ");
+			document.getElementById("msg").innerText = msg;
+//			alert(msg);
 			throw (msg);
 		}
 
@@ -167,6 +168,7 @@ var SvgTools = {
 		out.innerHTML = "";
 		var link = document.createElement("a");
 		link.innerHTML = "Download SVG file";
+		link.setAttribute("class", "download-btn");
 		link.setAttribute("href", URL.createObjectURL(oMyBlob));
 		link.setAttribute("download", ["box_", width, "x", depth, "x", height, "_", thickness, "mm.svg"].join(""));
 		out.appendChild(link);
@@ -352,9 +354,58 @@ var Box = {
 	}
 };
 
+function MMFromUnit(n, u)
+{
+	if (u == "mm")
+		mm = n;
+	else if (u == "cm")
+		mm = n * 10;
+	else if (u == "m")
+		mm = n * 1000;
+	else if (u == "in" || u == "" || u == null)
+		mm = n * 25.4;
+	else if (u == "ft")
+		mm = n * 304.8;
+	else
+		throw (n + " is not a length");
+
+	return mm;
+}
+
+function ParseLength(val)
+{
+	var result = val.match(/\s*([0-9]+)\s+([0-9]+)\/([0-9]+)\s*(.*)\s*/);
+	if (result != null)
+	{
+		var n0 = parseInt(result[1]);
+		var n1 = parseInt(result[2]);
+		var n2 = parseInt(result[3]);
+		var u = result[4];
+		var n = n0 + n1 / n2;
+		return MMFromUnit(n, u);
+	}
+
+	result = val.match(/\s*([0-9]+)\/([0-9]+)\s*(.*)\s*/);
+	if (result != null)
+	{
+		var n1 = parseInt(result[1]);
+		var n2 = parseInt(result[2]);
+		var u = result[3];
+		var n = n1 / n2;
+		return MMFromUnit(n, u);
+	}
+
+	result = val.match(/\s*([0-9.]*)\s*(.*)\s*/);
+	var n = result[1];
+	var u = result[2];
+
+	return MMFromUnit(n, u);
+
+
+}
 
 function value_of(id) {
-	var v = parseFloat(document.getElementById(id).value);
+	var v = ParseLength(document.getElementById(id).value);
 	if (isNaN(v)) {
 		throw (id + " is not a number : " + document.getElementById(id).value);
 	} else {
@@ -363,6 +414,7 @@ function value_of(id) {
 }
 
 function generate_box() {
+	document.getElementById("msg").innerText = "";
 	try {
 		if (document.getElementById('closed').checked) {
 			Box.withTop(value_of('width'), value_of('depth'), value_of('height'), value_of('tabs'), value_of('thickness'), value_of('backlash'));
@@ -372,6 +424,8 @@ function generate_box() {
 	} catch (e) {
 		console.error(e);
 		document.getElementById("out").innerHTML = "";
-		alert('Cannot generate the requested box');
+		if (document.getElementById("msg").innerText == "")
+			document.getElementById("msg").innerText = 'Cannot generate the requested box';
+//		alert('Cannot generate the requested box');
 	}
 }
