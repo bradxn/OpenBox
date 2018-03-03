@@ -27,10 +27,16 @@
 		<fieldset>
 			<div class="divider">Type of Box</div>
 			<div>
-					<label>
-						<input type="radio" checked name="closed" id="open" value="closed" onchange="handle_change()"/>
-						<span>Open Top Box</span>
-					</label>
+				<label>
+					<input type="radio" checked name="closed" id="open" value="closed" onchange="handle_change()"/>
+					<span>Open Top Box</span>
+				</label>
+			</div>
+			<div>
+				<label>
+					<input type="radio" name="closed" id="openFront" value="openFront" onchange="handle_change()"/>
+					<span>Open Top And Front</span>
+				</label>
 			</div>
 			<div>
 				<label>
@@ -59,7 +65,7 @@
 		</div>
 		<div>
 			<label>
-				<span>Size of Fingers</span>
+				<span>Size of Pins</span>
 				<input type="text" id="tabs" value="0.25 in" onchange="handle_change()"/>
 			</label>
 		</div>
